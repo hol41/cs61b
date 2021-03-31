@@ -59,6 +59,9 @@ public class LinkedListDeque<ll_type> {
     }
 
     public ll_type removeFirst(){
+        if (isEmpty()){
+            return null;
+        }
         ll_type return_item = sentinel.next.item;
         sentinel.next = sentinel.next.next;
         sentinel.next.pre = sentinel;
@@ -67,6 +70,9 @@ public class LinkedListDeque<ll_type> {
     }
 
     public ll_type removeLast(){
+        if (isEmpty()){
+            return null;
+        }
         ll_type return_item = sentinel.pre.item;
         sentinel.pre = sentinel.pre.pre;
         sentinel.pre.next = sentinel;
