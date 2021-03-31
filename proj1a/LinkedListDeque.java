@@ -1,10 +1,10 @@
-public class LinkedListDeque<ll_type> {
+public class LinkedListDeque<T> {
     private class StuffNode{
         public StuffNode pre;
-        public ll_type item;
+        public T item;
         public StuffNode next;
 
-        public StuffNode(StuffNode p, ll_type i, StuffNode n){
+        public StuffNode(StuffNode p, T i, StuffNode n){
             pre = p;
             item = i;
             next = n;
@@ -21,20 +21,20 @@ public class LinkedListDeque<ll_type> {
         size = 0;
     }
 
-    public LinkedListDeque(ll_type x){
+    public LinkedListDeque(T x){
         sentinel = new StuffNode(null, null, null);
         sentinel.next = new StuffNode(sentinel, x, sentinel);
         sentinel.pre = sentinel.next;
         size = 1;
     }
 
-    public void addFirst(ll_type x){
+    public void addFirst(T x){
         sentinel.next = new StuffNode(sentinel, x, sentinel.next);
         sentinel.next.next.pre = sentinel.next;
         size = size + 1;
     }
 
-    public void addLast(ll_type x){
+    public void addLast(T x){
         sentinel.pre = new StuffNode(sentinel.pre, x, sentinel);
         sentinel.pre.pre.next = sentinel.pre;
         size = size + 1;
@@ -57,34 +57,34 @@ public class LinkedListDeque<ll_type> {
         }
     }
 
-    public ll_type removeFirst(){
+    public T removeFirst(){
         if (isEmpty()){
             return null;
         }
-        ll_type return_item = sentinel.next.item;
+        T return_item = sentinel.next.item;
         sentinel.next = sentinel.next.next;
         sentinel.next.pre = sentinel;
         size = size -1;
         return return_item;
     }
 
-    public ll_type removeLast(){
+    public T removeLast(){
         if (isEmpty()){
             return null;
         }
-        ll_type return_item = sentinel.pre.item;
+        T return_item = sentinel.pre.item;
         sentinel.pre = sentinel.pre.pre;
         sentinel.pre.next = sentinel;
         size = size - 1;
         return return_item;
     }
 
-    public ll_type get(int index){
+    public T get(int index){
         if (index > size - 1 || index < 0){
             return null;
         }
         StuffNode p = sentinel.next;
-        while (index > 0) {
+        while (index > 0){
             p = p.next;
             index = index - 1;
         }
