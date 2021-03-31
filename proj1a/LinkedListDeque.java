@@ -91,19 +91,4 @@ public class LinkedListDeque<ll_type> {
         }
         return p.item;
     }
-
-
-    public static void main(String[] args) {
-        LinkedListDeque<Integer> test1 = new LinkedListDeque<>();
-        test1.addFirst(1);
-        test1.addLast((2));
-        test1.addLast(3);
-        LinkedListDeque<String> test2 = new LinkedListDeque<>("two");
-        test2.addFirst("one");
-        test2.addLast("three");
-        System.out.println(test2.get(0));
-        System.out.print(test2.get(4));
-
-        int x = 0;
-    }
 }

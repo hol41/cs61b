@@ -94,7 +94,7 @@ public class ArrayDeque<T>{
         if (isEmpty()){
             return null;
         }
-        if (repo.length / size() > 4){
+        if (repo.length / size() > 4 && repo.length > 8){
             resize(repo.length / 2 + 1);
         }
         T res = repo[loop_pos(start_index, repo.length)];
@@ -108,7 +108,7 @@ public class ArrayDeque<T>{
         if (isEmpty()){
             return null;
         }
-        if (repo.length / size() > 4){
+        if (repo.length / size() > 4 && repo.length > 8){
             resize(repo.length / 2 + 1);
         }
         T res = repo[loop_pos(end_index - 1, repo.length)];

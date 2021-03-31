@@ -168,32 +168,34 @@ public class ArrayDequeTest {
             test.addLast(i);
         }
         int actual1 = test.get(10);
+        int actual2 = test.get(1001);
         assertEquals(actual1,10);
+        assertEquals(actual2,1001);
         assertEquals(test.get(-1), null);
-        assertEquals(test.get(10000000), null);
+        assertEquals(test.get(1002), null);
     }
 
 
     public static void main(String[] args){
         ArrayDeque<Integer> test = new ArrayDeque<>();
         test.addFirst(1);
+        test.removeLast();
         test.addFirst(2);
+        test.removeLast();
         test.addFirst(3);
+        test.removeLast();
         test.addFirst(4);
+        test.removeLast();
         test.addFirst(5);
+        test.removeLast();
         test.addFirst(6);
+        test.removeLast();
         test.addFirst(7);
+        test.removeLast();
         test.addFirst(8);
-        test.addFirst(9);
-        test.removeFirst();
-        test.removeFirst();
-        test.removeFirst();
-        test.removeFirst();
-        test.removeFirst();
-        test.removeFirst();
-        test.removeFirst();
-        test.removeFirst();
+        test.removeLast();
         test.addLast(10);
+        test.removeLast();
         test.addLast(11);
         System.out.println(test.size());
         test.printDeque();
