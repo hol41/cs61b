@@ -86,6 +86,7 @@ public class LinkedListDeque<ll_type> {
         return p.item;
     }
 
+
     public static void main(String[] args) {
         LinkedListDeque<Integer> test1 = new LinkedListDeque<>();
         test1.addFirst(1);

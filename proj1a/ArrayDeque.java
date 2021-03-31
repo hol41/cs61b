@@ -26,7 +26,9 @@ public class ArrayDeque<T>{
 
 
     private void resize(int new_size){
-        T[] a = (T []) new Object[new_size];
+        T[] temp1 = (T []) new Object[size()];
+        T[] temp2 = (T []) new Object[new_size];
+
         int s_src_pos = loop_pos(start_index, repo.length);
         int e_src_pos = loop_pos(end_index - 1, repo.length);
 
@@ -34,13 +36,21 @@ public class ArrayDeque<T>{
         int e_des_pos = loop_pos(end_index - 1, new_size);
 
         if (e_src_pos < s_src_pos){
-            System.arraycopy(repo, s_src_pos, a, s_des_pos, new_size - s_des_pos);
-            System.arraycopy(repo, 0,a, 0,e_des_pos + 1);
+            System.arraycopy(repo, s_src_pos, temp1, 0, repo.length - s_src_pos);
+            System.arraycopy(repo, 0, temp1, repo.length - s_src_pos,e_src_pos + 1);
         }
         else{
-            System.arraycopy(repo, s_src_pos, a, s_des_pos, e_des_pos - s_des_pos + 1);
+            System.arraycopy(repo, s_src_pos, temp1, 0, e_src_pos - s_src_pos + 1);
         }
-        repo = a;
+
+        if (e_des_pos < s_des_pos){
+            System.arraycopy(temp1, 0, temp2, s_des_pos, new_size - s_des_pos);
+            System.arraycopy(temp1, new_size - s_des_pos, temp2, 0 ,e_des_pos + 1);
+        }
+        else{
+            System.arraycopy(temp1, 0, temp2, s_des_pos, e_des_pos - s_des_pos + 1);
+        }
+        repo = temp2;
     }
 
 
@@ -81,6 +91,9 @@ public class ArrayDeque<T>{
 
 
     public T removeFirst(){
+        if (isEmpty()){
+            return null;
+        }
         if (repo.length / size() > 4){
             resize(repo.length / 2 + 1);
         }
@@ -92,6 +105,9 @@ public class ArrayDeque<T>{
 
 
     public T removeLast(){
+        if (isEmpty()){
+            return null;
+        }
         if (repo.length / size() > 4){
             resize(repo.length / 2 + 1);
         }
@@ -102,7 +118,13 @@ public class ArrayDeque<T>{
     }
 
     public T get(int index){
-        return repo[loop_pos(index, repo.length)];
+        if (index >= size()){
+            return null;
+        }
+        else if(index < 0){
+            return null;
+        }
+        return repo[loop_pos(start_index + index, repo.length)];
     }
 
 
