@@ -2,12 +2,12 @@ public class LinkedListDeque<T> {
     private StuffNode sentinel;
     private int size;
 
-    private class StuffNode{
-        public StuffNode pre;
-        public T item;
-        public StuffNode next;
+    private class StuffNode {
+        private StuffNode pre;
+        private T item;
+        private StuffNode next;
 
-        public StuffNode(StuffNode p, T i, StuffNode n){
+        StuffNode(StuffNode p, T i, StuffNode n) {
             pre = p;
             item = i;
             next = n;
@@ -15,8 +15,7 @@ public class LinkedListDeque<T> {
     }
 
 
-
-    public LinkedListDeque(){
+    public LinkedListDeque() {
         sentinel = new StuffNode(null, null, null);
         sentinel.pre = sentinel;
         sentinel.next = sentinel;
@@ -24,28 +23,27 @@ public class LinkedListDeque<T> {
     }
 
 
-
-    public void addFirst(T x){
+    public void addFirst(T x) {
         sentinel.next = new StuffNode(sentinel, x, sentinel.next);
         sentinel.next.next.pre = sentinel.next;
         size = size + 1;
     }
 
-    public void addLast(T x){
+    public void addLast(T x) {
         sentinel.pre = new StuffNode(sentinel.pre, x, sentinel);
         sentinel.pre.pre.next = sentinel.pre;
         size = size + 1;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return size == 0;
     }
 
-    public int size(){
+    public int size() {
         return size;
     }
 
-    public void printDeque(){
+    public void printDeque() {
         StuffNode p = sentinel.next;
         while (p.item != null) {
             System.out.print(p.item);
@@ -54,41 +52,54 @@ public class LinkedListDeque<T> {
         }
     }
 
-    public T removeFirst(){
-        if (isEmpty()){
+    public T removeFirst() {
+        if (isEmpty()) {
             return null;
         }
-        T return_item = sentinel.next.item;
+        T returnItem = sentinel.next.item;
         sentinel.next = sentinel.next.next;
         sentinel.next.pre = sentinel;
-        size = size -1;
-        return return_item;
+        size = size - 1;
+        return returnItem;
     }
 
-    public T removeLast(){
-        if (isEmpty()){
+    public T removeLast() {
+        if (isEmpty()) {
             return null;
         }
-        T return_item = sentinel.pre.item;
+        T returnItem = sentinel.pre.item;
         sentinel.pre = sentinel.pre.pre;
         sentinel.pre.next = sentinel;
         size = size - 1;
-        return return_item;
+        return returnItem;
     }
 
-    public T get(int index){
-        if (index > size - 1 || index < 0){
+    public T get(int index) {
+        if (index > size - 1 || index < 0) {
             return null;
         }
         StuffNode p = sentinel.next;
-        while (index > 0){
+        while (index > 0) {
             p = p.next;
             index = index - 1;
         }
         return p.item;
     }
 
-    public T getRecursive(int index){
-        return null;
+    private T getRecursive(StuffNode p, int index) {
+        if (index == 0) {
+            return p.item;
+        } else {
+            return getRecursive(p.next, index - 1);
+        }
+    }
+
+    public T getRecursive(int index) {
+        if (index > size - 1 || index < 0) {
+            return null;
+        } else {
+            return getRecursive(sentinel, index);
+        }
     }
 }
+
