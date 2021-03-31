@@ -13,16 +13,17 @@ public class ArrayDequeTest {
         test.addFirst(7);
         test.addFirst(8);
         test.addFirst(9);
-        test.removeLast();
-        test.removeLast();
-        test.removeLast();
-        test.removeLast();
-        test.removeLast();
-        test.removeLast();
-        test.removeLast();
-        test.removeLast();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
         test.addLast(10);
         test.addLast(11);
+        System.out.println(test.size());
         test.printDeque();
     }
 

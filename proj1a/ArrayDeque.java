@@ -25,7 +25,7 @@ public class ArrayDeque<T>{
     }
 
 
-    public void resize(int new_size){
+    private void resize(int new_size){
         T[] a = (T []) new Object[new_size];
         int s_src_pos = loop_pos(start_index, repo.length);
         int e_src_pos = loop_pos(end_index - 1, repo.length);
@@ -81,7 +81,7 @@ public class ArrayDeque<T>{
 
 
     public T removeFirst(){
-        if (repo.length / size() < 4){
+        if (repo.length / size() > 4){
             resize(repo.length / 2 + 1);
         }
         T res = repo[loop_pos(start_index, repo.length)];
