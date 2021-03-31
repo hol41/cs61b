@@ -2,9 +2,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class ArrayDequeTest {
-    public boolean is_equal_array(ArrayDeque<Integer> ad, int[] a){
-        for (int i = 0; i < a.length; i = i + 1){
-            if (ad.get(i) - a[i] != 0){
+    public boolean isEqualArray(ArrayDeque<Integer> ad, int[] a) {
+        for (int i = 0; i < a.length; i = i + 1) {
+            if (ad.get(i) - a[i] != 0) {
                 return false;
             }
         }
@@ -13,33 +13,33 @@ public class ArrayDequeTest {
 
 
     @Test
-    public void testAddLast(){
+    public void testAddLast() {
         ArrayDeque<Integer> test = new ArrayDeque<>();
         int[] expect = new int[5000001];
-        for (int i = 0; i <= 5000000; i = i + 1){
+        for (int i = 0; i <= 5000000; i = i + 1) {
             test.addLast(i);
             expect[i] = i;
         }
-        System.out.print(is_equal_array(test, expect));
+        System.out.print(isEqualArray(test, expect));
     }
 
 
     @Test
-    public void testAddFirst(){
+    public void testAddFirst() {
         ArrayDeque<Integer> test = new ArrayDeque<>();
         int[] expect = new int[50001];
-        for (int i = 0; i <= 50000; i = i + 1){
+        for (int i = 0; i <= 50000; i = i + 1) {
             test.addFirst(50000 - i);
             expect[i] = i;
         }
-        System.out.print(is_equal_array(test, expect));
+        System.out.print(isEqualArray(test, expect));
     }
 
 
     @Test
-    public void testAddFirstWithAddLast(){
+    public void testAddFirstWithAddLast() {
         ArrayDeque<Integer> test = new ArrayDeque<>();
-        int[] expect = new int[] {-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9};
+        int[] expect = new int[] {-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         test.addFirst(-1);
         test.addFirst(-2);
         test.addFirst(-3);
@@ -60,12 +60,12 @@ public class ArrayDequeTest {
         test.addLast(8);
         test.addLast(9);
 
-        System.out.print(is_equal_array(test, expect));
+        System.out.print(isEqualArray(test, expect));
     }
 
 
     @Test
-    public void testSize(){
+    public void testSize() {
         ArrayDeque<Integer> test = new ArrayDeque<>();
         System.out.println(test.size());
         test.addFirst(-1);
@@ -110,15 +110,15 @@ public class ArrayDequeTest {
 
 
     @Test
-    public void testRemove(){
+    public void testRemove() {
         ArrayDeque<Integer> test = new ArrayDeque<>();
-        for (int i = 0; i <= 500; i = i + 1){
+        for (int i = 0; i <= 500; i = i + 1) {
             test.addFirst(500 - i);
         }
-        for (int i = 501; i <= 1001; i = i + 1){
+        for (int i = 501; i <= 1001; i = i + 1) {
             test.addLast(i);
         }
-        for (int i = 0; i <= 1001; i = i + 1){
+        for (int i = 0; i <= 1001; i = i + 1) {
             int a = test.removeFirst();
             assertEquals(i, a);
         }
@@ -127,13 +127,13 @@ public class ArrayDequeTest {
         assertEquals(0, test.size());
         assertTrue(test.isEmpty());
 
-        for (int i = 0; i <= 500; i = i + 1){
+        for (int i = 0; i <= 500; i = i + 1) {
             test.addFirst(500 - i);
         }
-        for (int i = 501; i <= 1001; i = i + 1){
+        for (int i = 501; i <= 1001; i = i + 1) {
             test.addLast(i);
         }
-        for (int i = 0; i <= 1001; i = i + 1){
+        for (int i = 0; i <= 1001; i = i + 1) {
             test.removeFirst();
         }
         assertEquals(null, test.removeFirst());
@@ -141,13 +141,13 @@ public class ArrayDequeTest {
         assertEquals(0, test.size());
         assertTrue(test.isEmpty());
 
-        for (int i = 0; i <= 500; i = i + 1){
+        for (int i = 0; i <= 500; i = i + 1) {
             test.addFirst(500 - i);
         }
-        for (int i = 501; i <= 1001; i = i + 1){
+        for (int i = 501; i <= 1001; i = i + 1) {
             test.addLast(i);
         }
-        for (int i = 0; i <= 1001; i = i + 1){
+        for (int i = 0; i <= 1001; i = i + 1) {
             int a = test.removeLast();
             assertEquals(1001 - i, a);
         }
@@ -159,24 +159,24 @@ public class ArrayDequeTest {
 
 
     @Test
-    public void testGet(){
+    public void testGet() {
         ArrayDeque<Integer> test = new ArrayDeque<>();
-        for (int i = 0; i <= 500; i = i + 1){
+        for (int i = 0; i <= 500; i = i + 1) {
             test.addFirst(500 - i);
         }
-        for (int i = 501; i <= 1001; i = i + 1){
+        for (int i = 501; i <= 1001; i = i + 1) {
             test.addLast(i);
         }
         int actual1 = test.get(10);
         int actual2 = test.get(1001);
-        assertEquals(actual1,10);
-        assertEquals(actual2,1001);
+        assertEquals(actual1, 10);
+        assertEquals(actual2, 1001);
         assertEquals(test.get(-1), null);
         assertEquals(test.get(1002), null);
     }
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         ArrayDeque<Integer> test = new ArrayDeque<>();
         test.addFirst(1);
         test.addFirst(2);

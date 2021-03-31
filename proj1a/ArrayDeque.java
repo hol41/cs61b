@@ -4,7 +4,7 @@ public class ArrayDeque<T> {
     private int endIndex;
 
 
-    ArrayDeque() {
+    public ArrayDeque() {
         repo = (T []) new Object[8];
         endIndex = 0;
         startIndex = 0;
