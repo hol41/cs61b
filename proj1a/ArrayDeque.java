@@ -13,7 +13,7 @@ public class ArrayDeque<T>{
 
     private int loop_pos(int x, int len){
         if (x < 0){
-            if (len + x == 0){
+            if ((0 - x)%len == 0){
                 return 0;
             }
             return len - (- x) % len ;

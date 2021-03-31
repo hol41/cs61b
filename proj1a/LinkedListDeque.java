@@ -1,5 +1,4 @@
 public class LinkedListDeque<ll_type> {
-
     private class StuffNode{
         public StuffNode pre;
         public ll_type item;
