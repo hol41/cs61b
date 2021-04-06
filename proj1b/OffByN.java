@@ -1,12 +1,12 @@
 public class OffByN implements CharacterComparator {
-    private int OffSet;
+    private int offSet;
     public OffByN(int N) {
-        OffSet = N;
+        offSet = N;
     }
 
     @Override
-    public boolean equalChars(char x, char y){
-        if (x - y == OffSet || y - x == OffSet){
+    public boolean equalChars(char x, char y) {
+        if (x - y == offSet || y - x == offSet) {
             return true;
         }
         return false;
