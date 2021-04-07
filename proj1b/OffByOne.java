@@ -3,7 +3,7 @@ public class OffByOne implements CharacterComparator {
     public boolean equalChars(char x, char y) {
         x = Character.toLowerCase(x);
         y = Character.toLowerCase(y);
-        if (x < 61 || x > 122 || y < 61 || y > 122) {
+        if (x < 'a' || x > 'z' || y < 'a'|| y > 'z') {
             return false;
         }
         if (x - y == 1 || y - x == 1) {
