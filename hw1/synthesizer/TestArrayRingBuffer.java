@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class TestArrayRingBuffer {
     @Test
     public void someTest() {
-        ArrayRingBuffer<Integer> arb = new ArrayRingBuffer<> (10);
+        ArrayRingBuffer<Integer> arb = new ArrayRingBuffer<>(10);
         arb.enqueue(1);
         arb.enqueue(1);
         arb.enqueue(1);
@@ -48,23 +48,23 @@ public class TestArrayRingBuffer {
         int test10 = arb.dequeue();
 
 
-        assertEquals(test1,10);
-        assertEquals(test2,20);
-        assertEquals(test3,30);
-        assertEquals(test4,40);
-        assertEquals(test5,50);
-        assertEquals(test6,60);
-        assertEquals(test7,70);
-        assertEquals(test8,80);
-        assertEquals(test9,90);
-        assertEquals(test10,100);
+        assertEquals(test1, 10);
+        assertEquals(test2, 20);
+        assertEquals(test3, 30);
+        assertEquals(test4, 40);
+        assertEquals(test5, 50);
+        assertEquals(test6, 60);
+        assertEquals(test7, 70);
+        assertEquals(test8, 80);
+        assertEquals(test9, 90);
+        assertEquals(test10, 100);
         assertTrue(arb.isEmpty());
         assertFalse(arb.isFull());
     }
 
     @Test
     public void task5test() {
-        ArrayRingBuffer<Integer> arb = new ArrayRingBuffer<> (10);
+        ArrayRingBuffer<Integer> arb = new ArrayRingBuffer<>(10);
         arb.enqueue(10);
         arb.enqueue(20);
         arb.enqueue(30);
@@ -74,7 +74,6 @@ public class TestArrayRingBuffer {
         arb.enqueue(70);
         arb.enqueue(80);
         arb.enqueue(90);
-        arb.enqueue(100);
         for (double c: arb) {
             System.out.println(c);
         }

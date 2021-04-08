@@ -6,7 +6,8 @@ public class GuitarHero {
     public static void main(String[] args) {
         /* create two guitar strings, for concert A and C */
         for (int i = 0; i < 37; i = i + 1) {
-            CONCERTS[i] = new synthesizer.GuitarString(440.0 * Math.pow(2, ((double) i - 24.0) / 12.0));
+            CONCERTS[i] = new synthesizer.GuitarString(440.0 * Math.pow(2,
+                    ((double) i - 24.0) / 12.0));
         }
 
         while (true) {
