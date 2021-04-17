@@ -1,6 +1,5 @@
 package byog.Core.WorldParts.Room;
 
-import byog.Core.Deque.LinkedListDeque;
 import byog.Core.RandomUtils;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
@@ -22,62 +21,63 @@ public class Room {
         connected = false;
     }
 
-    public void genRoom(TETile[][] world) {
-        if (!connected) {
-            return;
+    protected static int randomIntRange(Random R, int lower, int upper) {
+        if (upper - lower == 0) {
+            return lower;
         }
+        return lower + RandomUtils.uniform(R, upper - lower);
+    }
 
+    public void print(TETile[][] world) {
         for (int x = xStart + 1; x < xStart + width - 1; x = x + 1) {
-            for (int y = yStart; y < yStart + height - 1; y = y + 1) {
+            for (int y = yStart + 1; y < yStart + height - 1; y = y + 1) {
                 world[x][y] = Tileset.FLOOR;
             }
         }
         for (int x = xStart; x < xStart + width; x = x + 1) {
-            world[x][yStart] = Tileset.WALL;
-            world[x][yStart + height - 1] = Tileset.WALL;
+            if (Tileset.NOTHING.equals(world[x][yStart])) {
+                world[x][yStart] = Tileset.WALL;
+            }
+            if (Tileset.NOTHING.equals(world[x][yStart + height - 1])) {
+                world[x][yStart + height - 1] = Tileset.WALL;
+            }
         }
         for (int y = yStart + 1; y < yStart + height - 1; y = y + 1) {
-            world[xStart][y] = Tileset.WALL;
-            world[xStart + width - 1][y] = Tileset.WALL;
+            if (Tileset.NOTHING.equals(world[xStart][y])) {
+                world[xStart][y] = Tileset.WALL;
+            }
+            if (Tileset.NOTHING.equals(world[xStart + width - 1][y])) {
+                world[xStart + width - 1][y] = Tileset.WALL;
+            }
         }
     }
 
 
-    public static Room nextRandomRoom(Random random, int xLower, int xUpper, int yLower, int yUpper) {
+    public static Room nextRandom(Random random, Room hallway, int xLower, int xUpper, int yUpper) {
+        // y = hallway.yStart + height
+        // y + height >= yUpper  STOP
+        // x >= 0
+        // x + width < xUpper
+        // x <= hallway.x
+        // x <= xUpper - MINWIDTH
+        // width >= MINWIDTH
+        // height >= MINHIGHT
         final int MINWIDTH = 4;
         final int MINHEIGHT = 4;
-        final int YINREMENT = 5;
-        System.out.println();
-        int x = RandomUtils.uniform(random, xUpper - MINWIDTH);
-        int y = yLower + RandomUtils.uniform(random, YINREMENT);
+        final int xStartMin = Math.min(hallway.xStart,xUpper - MINWIDTH);
+        final int xEndMin = hallway.xStart + hallway.width;
+        int x = randomIntRange(random, xLower, xStartMin);
+        int y = hallway.yStart + hallway.height - 2;
 
-        int width = MINWIDTH + RandomUtils.uniform(random, xUpper - x - MINHEIGHT);
-        int height = MINHEIGHT + RandomUtils.uniform(random,xUpper - x - MINHEIGHT );
+        int width = randomIntRange(random,xEndMin  - x , xUpper - x );
+
+        int height = randomIntRange(random,MINHEIGHT , 20);
         if (y + height >= yUpper) {
             return null;
         }
-        return new Room(x + xLower , y, width, height);
+        return new Room(x, y, width, height);
     }
 
-
-    public boolean calIntersect1(VerHallway h, LinkedListDeque<int[]> intersections) {
-        int[] res1 = new int[2];
-        int[] res2 = new int[2];
-        if (xStart <= h.xStart && h.xStart <= xStart + width - 3) {
-            if (h.yStart < yStart) {
-                res1[0] = h.xStart + 1;
-                res1[1] = yStart;
-                intersections.addLast(res1);
-            }
-            if (h.yStart + h.height > yStart + height) {
-                res2[0] = h.xStart + 1;
-                res2[1] = yStart + height - 1;
-                intersections.addLast(res2);
-            }
-            return true;
-        }
-        return false;
-    }
 
 
 }
