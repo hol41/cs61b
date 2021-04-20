@@ -195,11 +195,13 @@ public class Game {
     }
 
     private void saveWorld(GameWorld g) {
-        ObjectOutputStream out = null;
         try {
-            out = new ObjectOutputStream(new FileOutputStream(SAVEPATH));
+            ObjectOutputStream out;
+            FileOutputStream fileOut = new FileOutputStream(SAVEPATH);
+            out = new ObjectOutputStream(fileOut);
             out.writeObject(g);
             out.close();
+            fileOut.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -208,9 +210,11 @@ public class Game {
     private GameWorld loadWorld() {
         ObjectInputStream in = null;
         try {
-            in = new ObjectInputStream(new FileInputStream(SAVEPATH));
+            FileInputStream fileIn = new FileInputStream(SAVEPATH);
+            in = new ObjectInputStream(fileIn);
             GameWorld world = (GameWorld) in.readObject();
             in.close();
+            fileIn.close();
             return world;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
