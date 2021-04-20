@@ -12,7 +12,7 @@ import java.io.*;
 public class Game {
     public static final int WIDTH = 80 + 1;
     public static final int HEIGHT = 30;
-    public static final String SAVEPATH = "save.dat";
+    public static final String SAVEPATH = "save.txt";
     private int gamePhase;
     private String seedStr;
     private long seed;
