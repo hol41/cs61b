@@ -1,4 +1,4 @@
-package byog.Core.WorldParts.Room;
+package byog.Core.Room;
 
 import byog.Core.Deque.LinkedListDeque;
 import byog.TileEngine.TETile;
@@ -10,14 +10,12 @@ public class Room {
     public int yStart;
     public int width;
     public int height;
-    public boolean connected;
 
     public Room(int x, int y, int w, int h) {
         xStart = x;
         yStart = y;
         width = w;
         height = h;
-        connected = false;
     }
 
     protected static int overlap(int s1, int e1, int s2, int e2) {
@@ -39,10 +37,18 @@ public class Room {
     }
 
     public boolean isOverlapWithRoom(Room room) {
-        if (room.contains(xStart, yStart)) return true;
-        if (room.contains(xStart + width - 1, yStart)) return true;
-        if (room.contains(xStart, yStart + height - 1)) return true;
-        if (room.contains(xStart + width - 1, yStart + height - 1)) return true;
+        if (room.contains(xStart, yStart)) {
+            return true;
+        }
+        if (room.contains(xStart + width - 1, yStart)) {
+            return true;
+        }
+        if (room.contains(xStart, yStart + height - 1)) {
+            return true;
+        }
+        if (room.contains(xStart + width - 1, yStart + height - 1)) {
+            return true;
+        }
         return false;
     }
 
@@ -88,12 +94,14 @@ public class Room {
     }
 
     public void connectRoom(Room room, LinkedListDeque<Room> hallways) {
-        int overlapX = overlap(room.xStart - 1, room.xStart + room.width -2, xStart - 1, xStart + width -2);
+        int overlapX = overlap(room.xStart - 1, room.xStart + room.width - 2,
+                xStart - 1, xStart + width - 2);
         if (overlapX >= 0) {
             hallways.addLast(HallwayVer.getNewHalwayVer(overlapX, yStart, room.yStart));
             return;
         }
-        int overlapY = overlap(room.yStart - 1, room.yStart + room.height -2, yStart - 1, yStart + height -2);
+        int overlapY = overlap(room.yStart - 1, room.yStart + room.height - 2,
+                yStart - 1, yStart + height - 2);
         if (overlapY >= 0) {
             hallways.addLast(HallwayHor.getNewHalwayHor(overlapY, xStart, room.xStart));
             return;

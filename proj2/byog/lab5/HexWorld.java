@@ -99,7 +99,7 @@ public class HexWorld {
             }
         }
 
-        addHexagon(8,30, 30, world);
+        addHexagon(8, 30, 30, world);
         ter.renderFrame(world);
 
     }

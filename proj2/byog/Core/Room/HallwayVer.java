@@ -1,11 +1,6 @@
-package byog.Core.WorldParts.Room;
+package byog.Core.Room;
 
-import byog.TileEngine.TETile;
-import byog.TileEngine.Tileset;
-
-import java.util.Random;
-
-public class HallwayVer extends Room{
+public class HallwayVer extends Room {
     public HallwayVer(int x, int y, int h) {
         super(x, y, 3, h);
     }
@@ -13,8 +8,7 @@ public class HallwayVer extends Room{
     public static HallwayVer getNewHalwayVer(int x, int yStart, int yEnd) {
         if (yStart < yEnd) {
             return new HallwayVer(x, yStart, yEnd - yStart + 3);
-        }
-        else {
+        } else {
             return new HallwayVer(x, yEnd, yStart - yEnd + 3);
         }
     }

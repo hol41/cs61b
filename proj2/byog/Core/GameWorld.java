@@ -1,6 +1,6 @@
 package byog.Core;
 import byog.Core.Deque.LinkedListDeque;
-import byog.Core.WorldParts.Room.Room;
+import byog.Core.Room.Room;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
@@ -9,11 +9,11 @@ import java.util.Random;
 
 
 public class GameWorld implements Serializable {
-    final private int WIDTH = 80;
-    final private int HEIGHT = 30;
+    final int WIDTH = 80;
+    final int HEIGHT = 30;
 
-    public int[][] intWorld;
-    public boolean ifWin;
+    private int[][] intWorld;
+    boolean ifWin;
     private int peopleX;
     private int peopleY;
     private int flowerX;
@@ -165,22 +165,23 @@ public class GameWorld implements Serializable {
     }
 
     private static LinkedListDeque<Room> genRandomRooms(Random R, int width, int height) {
-        final int MINWIDTH = 4;
-        final int MINHEIGHT = 4;
-        final int MAXWIDTH = 15;
-        final int MAXHEIGHT = 15;
-        final int NROOMS = randomIntRange(R, 15, 25);
+        final int minwidth = 4;
+        final int minheight = 4;
+        final int maxwidth = 15;
+        final int maxheight = 15;
+        final int nrooms = randomIntRange(R, 15, 25);
         LinkedListDeque<Room> rooms = new LinkedListDeque<>();
-        for (int i = 0; i <= NROOMS; i = i + 1){
-            Room tempRoom = new Room(randomIntRange(R,0, width - MINWIDTH),
-                    randomIntRange(R, 0, height - MINHEIGHT),
-                    randomIntRange(R, MINWIDTH, MAXWIDTH),
-                    randomIntRange(R, MINHEIGHT, MAXHEIGHT));
-            while (tempRoom.isOverlapWithRooms(rooms) || tempRoom.xStart + tempRoom.width >= width || tempRoom.yStart + tempRoom.height >= height) {
-                tempRoom = new Room(randomIntRange(R,0, width - MINWIDTH),
-                        randomIntRange(R, 0, height - MINHEIGHT),
-                        randomIntRange(R, MINWIDTH, MAXWIDTH),
-                        randomIntRange(R, MINHEIGHT, MAXHEIGHT));
+        for (int i = 0; i <= nrooms; i = i + 1) {
+            Room tempRoom = new Room(randomIntRange(R, 0,  width - minwidth),
+                    randomIntRange(R, 0, height - minheight),
+                    randomIntRange(R, minwidth, maxwidth),
+                    randomIntRange(R, minheight, maxheight));
+            while (tempRoom.isOverlapWithRooms(rooms) || tempRoom.xStart + tempRoom.width >= width
+                    || tempRoom.yStart + tempRoom.height >= height) {
+                tempRoom = new Room(randomIntRange(R, 0, width - minwidth),
+                        randomIntRange(R, 0, height - minheight),
+                        randomIntRange(R, minwidth, maxwidth),
+                        randomIntRange(R, minheight, maxheight));
             }
             rooms.addLast(tempRoom);
         }
@@ -188,14 +189,18 @@ public class GameWorld implements Serializable {
     }
 
     private void genPeopleInRoom(LinkedListDeque<Room> rooms, Random R) {
-        peopleX = randomIntRange(R,rooms.get(1).xStart + 1, rooms.get(1).xStart + rooms.get(1).width - 2);
-        peopleY = randomIntRange(R,rooms.get(1).yStart + 1, rooms.get(1).yStart + rooms.get(1).height - 2);
+        peopleX = randomIntRange(R, rooms.get(1).xStart + 1,
+                rooms.get(1).xStart + rooms.get(1).width - 2);
+        peopleY = randomIntRange(R,  rooms.get(1).yStart + 1,
+                rooms.get(1).yStart + rooms.get(1).height - 2);
     }
 
     private void genFlowerInRoom(LinkedListDeque<Room> rooms, Random R) {
         int n = rooms.size() - 1;
-        flowerX = randomIntRange(R,rooms.get(n).xStart + 1, rooms.get(n).xStart + rooms.get(n).width - 2);
-        flowerY = randomIntRange(R,rooms.get(n).yStart + 1, rooms.get(n).yStart + rooms.get(n).height - 2);
+        flowerX = randomIntRange(R, rooms.get(n).xStart + 1,
+                rooms.get(n).xStart + rooms.get(n).width - 2);
+        flowerY = randomIntRange(R, rooms.get(n).yStart + 1,
+                rooms.get(n).yStart + rooms.get(n).height - 2);
     }
 
     public GameWorld(long seed) {

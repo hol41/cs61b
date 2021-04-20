@@ -7,7 +7,7 @@ import edu.princeton.cs.introcs.StdDraw;
 
 import java.awt.*;
 import java.io.*;
-import java.util.Random;
+
 
 public class Game {
     public static final int WIDTH = 80 + 1;
@@ -20,6 +20,10 @@ public class Game {
     private GameWorld gameWorld;
 
     public Game() {
+
+    }
+
+    private void gamePhaseOne() {
         StdDraw.setCanvasSize(this.WIDTH * 16, HEIGHT * 16);
         Font font = new Font("Monaco", Font.BOLD, 30);
         StdDraw.setFont(font);
@@ -27,9 +31,6 @@ public class Game {
         StdDraw.setYscale(0, HEIGHT);
         StdDraw.clear(Color.BLACK);
         StdDraw.enableDoubleBuffering();
-        }
-
-    private void gamePhaseOne() {
         while (gamePhase == 0) {
             drawModeSelect();
             if (StdDraw.hasNextKeyTyped()) {
@@ -61,8 +62,7 @@ public class Game {
             }
             gameWorld = new GameWorld(seed);
         } else if (mode == 'l') {
-            seed = 1111111;
-            gameWorld = new GameWorld(seed);
+            gameWorld = loadWorld();
             gamePhase = gamePhase + 1;
         } else {
             gamePhase = gamePhase + 1;
@@ -70,7 +70,7 @@ public class Game {
         }
     }
 
-    private void gamePhaseThree() throws IOException, ClassNotFoundException {
+    private void gamePhaseThree() {
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
         boolean trigger = false;
@@ -85,13 +85,42 @@ public class Game {
                     saveWorld(gameWorld);
                 }
                 trigger = false;
-                if (tempKey == 'w') {gameWorld.moveUp();}
-                else if (tempKey == 's') {gameWorld.moveDown();}
-                else if (tempKey == 'a') {gameWorld.moveLeft();}
-                else if (tempKey == 'd') {gameWorld.moveRight();}
-                else if (tempKey == ':') {trigger = true;}
+                if (tempKey == 'w') {
+                    gameWorld.moveUp();
+                } else if (tempKey == 's') {
+                    gameWorld.moveDown();
+                } else if (tempKey == 'a') {
+                    gameWorld.moveLeft();
+                } else if (tempKey == 'd') {
+                    gameWorld.moveRight();
+                } else if (tempKey == ':') {
+                    trigger = true;
+                }
             }
-            drawWorld(gameWorld.getWorld(),mouseX, mouseY);
+            drawWorld(gameWorld.getWorld(), mouseX, mouseY);
+        }
+    }
+
+    private void gameWithString(String playStr) {
+        boolean trigger = false;
+        for (int i = 0; i < playStr.length(); i = i + 1) {
+            char tempKey = playStr.charAt(i);
+            if (trigger && tempKey == 'Q') {
+                saveWorld(gameWorld);
+                break;
+            }
+            trigger = false;
+            if (tempKey == 'W') {
+                gameWorld.moveUp();
+            } else if (tempKey == 'S') {
+                gameWorld.moveDown();
+            } else if (tempKey == 'A') {
+                gameWorld.moveLeft();
+            } else if (tempKey == 'D') {
+                gameWorld.moveRight();
+            } else if (tempKey == ':') {
+                trigger = true;
+            }
         }
     }
 
@@ -143,7 +172,8 @@ public class Game {
         }
 
         StdDraw.setPenColor(Color.white);
-        TETile block = world[Math.min((int)Math.floor(mouseX),WIDTH - 1)][Math.min((int)Math.floor(mouseY),HEIGHT -1)];
+        TETile block = world[Math.min((int) Math.floor(mouseX), WIDTH - 1)]
+                [Math.min((int) Math.floor(mouseY), HEIGHT - 1)];
         if (block.equals(Tileset.NOTHING)) {
             StdDraw.textLeft(0, HEIGHT - 0.5, "Outdoor space");
         } else if (block.equals(Tileset.PLAYER)) {
@@ -164,22 +194,38 @@ public class Game {
         StdDraw.show();
     }
 
-    private void saveWorld(GameWorld g) throws IOException, ClassNotFoundException {
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(SAVEPATH));
-        out.writeObject(g);
-        out.close();
+    private void saveWorld(GameWorld g) {
+        ObjectOutputStream out = null;
+        try {
+            out = new ObjectOutputStream(new FileOutputStream(SAVEPATH));
+            out.writeObject(g);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    private GameWorld loadWorld() {
+        ObjectInputStream in = null;
+        try {
+            in = new ObjectInputStream(new FileInputStream(SAVEPATH));
+            GameWorld world = (GameWorld) in.readObject();
+            in.close();
+            return world;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
-        while (true) {
-            if (StdDraw.hasNextKeyTyped()) {
-                char key = StdDraw.nextKeyTyped();
-            }
-        }
+        Game a = new Game();
+        a.gamePhaseOne();
+        a.gamePhaseTwo();
+        a.gamePhaseThree();
     }
 
     /**
@@ -195,31 +241,27 @@ public class Game {
      * @return the 2D TETile[][] representing the state of the world
      */
     public TETile[][] playWithInputString(String input) {
-        // TODO: Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
-        TETile[][] finalWorldFrame;
-
+        int index = 1;
         if (input.charAt(0) == 'N') {
             String seedStr = "";
-            for (int i = 1; input.charAt(i) != 'S'; i = i + 1) {
-                seedStr = seedStr + input.charAt(i);
+            while (input.charAt(index) != 'S') {
+                seedStr = seedStr + input.charAt(index);
+                index = index + 1;
             }
+            index = index + 1;
             int seed = Integer.parseInt(seedStr);
-            GameWorld world = new GameWorld(seed);
-            finalWorldFrame = world.getWorld();
-
+            gameWorld = new GameWorld(seed);
+        } else {
+            gameWorld = loadWorld();
         }
-        else {
-            finalWorldFrame = null;
-        }
-        return finalWorldFrame;
-    }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Game a = new Game();
-        a.gamePhaseOne();
-        a.gamePhaseTwo();
-        a.gamePhaseThree();
+        String playString = "";
+        for (int i = index; i < input.length(); i = i + 1) {
+            playString = playString + input.charAt(i);
+        }
+        gameWithString(playString);
+        return gameWorld.getWorld();
     }
 }

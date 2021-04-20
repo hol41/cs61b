@@ -44,7 +44,6 @@ public class MemoryGame {
         StdDraw.clear(Color.BLACK);
         StdDraw.enableDoubleBuffering();
 
-        //TODO: Initialize random number generator
     }
 
     public String generateRandomString(int n) {
@@ -58,14 +57,12 @@ public class MemoryGame {
     }
 
     public void drawFrame(String s) {
-        //TODO: Take the string and display it in the center of the screen
-        //TODO: If game is not over, display relevant game information at the top of the screen
         int x = width / 2;
         int y = height / 2;
         StdDraw.clear();
         StdDraw.clear(Color.black);
 
-        if (!gameOver){
+        if (!gameOver) {
             Font smallFont = new Font("Monaco", Font.BOLD, 20);
             StdDraw.setFont(smallFont);
             StdDraw.setPenColor(Color.white);
