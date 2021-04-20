@@ -257,7 +257,7 @@ public class Game {
                 index = index + 1;
             }
             index = index + 1;
-            int seed = Integer.parseInt(seedStr);
+            Long seed = Long.parseLong(seedStr);
             gameWorld = new GameWorld(seed);
         } else {
             gameWorld = loadWorld();
