@@ -119,5 +119,21 @@ public class LinkedListDeque<T> implements Deque<T> {
             return getRecursive(sentinel.next, index);
         }
     }
+
+    public T pop(int index) {
+        if (index > size - 1 || index < 0) {
+            return null;
+        }
+        StuffNode p = sentinel.next;
+        while (index > 0) {
+            p = p.next;
+            index = index - 1;
+        }
+        T res = p.item;
+        p.pre.next = p.next;
+        p.next.pre = p.pre;
+        size = size - 1;
+        return res;
+    }
 }
 

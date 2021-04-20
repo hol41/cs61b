@@ -1,10 +1,9 @@
 package byog.Core.WorldParts.Room;
 
-import byog.Core.RandomUtils;
+import byog.Core.Deque.LinkedListDeque;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
-import java.util.Random;
 
 public class Room {
     public int xStart;
@@ -21,12 +20,44 @@ public class Room {
         connected = false;
     }
 
-    protected static int randomIntRange(Random R, int lower, int upper) {
-        if (upper - lower == 0) {
-            return lower;
+    protected static int overlap(int s1, int e1, int s2, int e2) {
+        s1 = Math.max(s1, 0);
+        s2 = Math.max(s2, 0);
+        for (int i = Math.min(s1, s2); i <= Math.max(e1, e2); i = i + 1) {
+            if (i >= s1 && i <= e1 && i >= s2 && i <= e2) {
+                return i;
+            }
         }
-        return lower + RandomUtils.uniform(R, upper - lower);
+        return -1;
     }
+
+    private boolean contains(int x, int y) {
+        if (x >= xStart && x <= xStart + width - 1 && y >= yStart && y <= yStart + height - 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isOverlapWithRoom(Room room) {
+        if (room.contains(xStart, yStart)) return true;
+        if (room.contains(xStart + width - 1, yStart)) return true;
+        if (room.contains(xStart, yStart + height - 1)) return true;
+        if (room.contains(xStart + width - 1, yStart + height - 1)) return true;
+        return false;
+    }
+
+    public boolean isOverlapWithRooms(LinkedListDeque<Room> rooms) {
+        for (int i = 0; i < rooms.size(); i = i + 1) {
+            if (isOverlapWithRoom(rooms.get(i))) {
+                return true;
+            }
+            if (rooms.get(i).isOverlapWithRoom(this)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public void print(TETile[][] world) {
         for (int x = xStart + 1; x < xStart + width - 1; x = x + 1) {
@@ -52,30 +83,25 @@ public class Room {
         }
     }
 
+    public int calRoomDistance(Room room) {
+        return Math.abs(room.xStart - xStart) + Math.abs(room.yStart - yStart);
+    }
 
-    public static Room nextRandom(Random random, Room hallway, int xLower, int xUpper, int yUpper) {
-        // y = hallway.yStart + height
-        // y + height >= yUpper  STOP
-        // x >= 0
-        // x + width < xUpper
-        // x <= hallway.x
-        // x <= xUpper - MINWIDTH
-        // width >= MINWIDTH
-        // height >= MINHIGHT
-        final int MINWIDTH = 4;
-        final int MINHEIGHT = 4;
-        final int xStartMin = Math.min(hallway.xStart,xUpper - MINWIDTH);
-        final int xEndMin = hallway.xStart + hallway.width;
-        int x = randomIntRange(random, xLower, xStartMin);
-        int y = hallway.yStart + hallway.height - 2;
-
-        int width = randomIntRange(random,xEndMin  - x , xUpper - x );
-
-        int height = randomIntRange(random,MINHEIGHT , 20);
-        if (y + height >= yUpper) {
-            return null;
+    public void connectRoom(Room room, LinkedListDeque<Room> hallways) {
+        int overlapX = overlap(room.xStart - 1, room.xStart + room.width -2, xStart - 1, xStart + width -2);
+        if (overlapX >= 0) {
+            hallways.addLast(HallwayVer.getNewHalwayVer(overlapX, yStart, room.yStart));
+            return;
         }
-        return new Room(x, y, width, height);
+        int overlapY = overlap(room.yStart - 1, room.yStart + room.height -2, yStart - 1, yStart + height -2);
+        if (overlapY >= 0) {
+            hallways.addLast(HallwayHor.getNewHalwayHor(overlapY, xStart, room.xStart));
+            return;
+        }
+
+        hallways.addLast(HallwayVer.getNewHalwayVer(xStart, yStart, room.yStart));
+        hallways.addLast(HallwayHor.getNewHalwayHor(room.yStart, xStart, room.xStart));
+
     }
 
 

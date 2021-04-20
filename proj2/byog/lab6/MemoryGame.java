@@ -23,16 +23,17 @@ public class MemoryGame {
             System.out.println("Please enter a seed");
             return;
         }
-
         int seed = Integer.parseInt(args[0]);
-        MemoryGame game = new MemoryGame(40, 40);
+        MemoryGame game = new MemoryGame(seed, 40, 40);
         game.startGame();
+
     }
 
-    public MemoryGame(int width, int height) {
+    public MemoryGame(long seed, int width, int height) {
         /* Sets up StdDraw so that it has a width by height grid of 16 by 16 squares as its canvas
          * Also sets up the scale so the top left is (0,0) and the bottom right is (width, height)
          */
+        rand = new Random(seed);
         this.width = width;
         this.height = height;
         StdDraw.setCanvasSize(this.width * 16, this.height * 16);
@@ -47,28 +48,80 @@ public class MemoryGame {
     }
 
     public String generateRandomString(int n) {
-        //TODO: Generate random string of letters of length n
-        return null;
+        StringBuilder sb = new StringBuilder();
+
+        while (sb.length() < n) {
+            sb.append(CHARACTERS[rand.nextInt(CHARACTERS.length)]);
+        }
+
+        return sb.toString();
     }
 
     public void drawFrame(String s) {
         //TODO: Take the string and display it in the center of the screen
         //TODO: If game is not over, display relevant game information at the top of the screen
+        int x = width / 2;
+        int y = height / 2;
+        StdDraw.clear();
+        StdDraw.clear(Color.black);
+
+        if (!gameOver){
+            Font smallFont = new Font("Monaco", Font.BOLD, 20);
+            StdDraw.setFont(smallFont);
+            StdDraw.setPenColor(Color.white);
+            StdDraw.textLeft(0, height - 1, "Round" + round);
+            StdDraw.text(x, y, s, 0.0);
+        }
+
+        StdDraw.show();
     }
 
     public void flashSequence(String letters) {
-        //TODO: Display each character in letters, making sure to blank the screen between letters
+        for (int i = 0; i < letters.length(); i = i + 1) {
+            drawFrame(letters.substring(i, i + 1));
+            StdDraw.pause(1000);
+            drawFrame(" ");
+            StdDraw.pause(500);
+        }
     }
 
     public String solicitNCharsInput(int n) {
-        //TODO: Read n letters of player input
-        return null;
+        StringBuilder input = new StringBuilder();
+        while (input.length() < n) {
+            if (StdDraw.hasNextKeyTyped()) {
+                input.append(StdDraw.nextKeyTyped());
+            }
+            drawFrame(input.toString());
+        }
+        StdDraw.pause(500);
+        return input.toString();
     }
 
     public void startGame() {
-        //TODO: Set any relevant variables before the game starts
+        gameOver = false;
+        playerTurn = false;
+        round = 1;
 
-        //TODO: Establish Game loop
+        while (!gameOver) {
+            playerTurn = false;
+            drawFrame("Round " + round + "! Good luck!");
+            StdDraw.pause(1500);
+
+
+            String roundString = generateRandomString(round);
+            flashSequence(roundString);
+
+            playerTurn = true;
+            String userInput = solicitNCharsInput(round);
+
+            if (!userInput.equals(roundString)) {
+                gameOver = true;
+                drawFrame("Game Over! Final level: " + round);
+            } else {
+                drawFrame("Correct, well done!");
+                StdDraw.pause(1500);
+                round += 1;
+            }
+        }
     }
-
 }
