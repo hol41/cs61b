@@ -7,6 +7,7 @@ import edu.princeton.cs.introcs.StdDraw;
 
 import java.awt.*;
 import java.io.*;
+import java.util.Locale;
 
 
 public class Game {
@@ -247,6 +248,7 @@ public class Game {
     public TETile[][] playWithInputString(String input) {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
+        input = input.toUpperCase(Locale.ROOT);
         int index = 1;
         if (input.charAt(0) == 'N') {
             String seedStr = "";
