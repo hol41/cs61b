@@ -5,8 +5,15 @@ import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 import edu.princeton.cs.introcs.StdDraw;
 
-import java.awt.*;
-import java.io.*;
+import java.awt.Color;
+import java.awt.Font;
+
+import java.io.ObjectOutputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 import java.util.Locale;
 
 
@@ -191,7 +198,6 @@ public class Game {
         } else {
             StdDraw.textLeft(10, HEIGHT - 0.5, "Keep Going");
         }
-
         StdDraw.show();
     }
 
@@ -249,16 +255,17 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
         input = input.toUpperCase(Locale.ROOT);
+
         int index = 1;
         if (input.charAt(0) == 'N') {
-            String seedStr = "";
+            seedStr = "";
             while (input.charAt(index) != 'S') {
                 seedStr = seedStr + input.charAt(index);
                 index = index + 1;
             }
             index = index + 1;
-            Long seed = Long.parseLong(seedStr);
-            gameWorld = new GameWorld(seed);
+            seed = Long.parseLong(seedStr);
+            gameWorld = new GameWorld(Long.parseLong(seedStr));
         } else {
             gameWorld = loadWorld();
         }

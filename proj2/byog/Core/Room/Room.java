@@ -6,10 +6,10 @@ import byog.TileEngine.Tileset;
 
 
 public class Room {
-    public int xStart;
-    public int yStart;
-    public int width;
-    public int height;
+    private int xStart;
+    private int yStart;
+    private int width;
+    private int height;
 
     public Room(int x, int y, int w, int h) {
         xStart = x;
@@ -18,6 +18,21 @@ public class Room {
         height = h;
     }
 
+    public int height() {
+        return height;
+    }
+
+    public int width() {
+        return width;
+    }
+
+    public int xStart() {
+        return xStart;
+    }
+
+    public int yStart() {
+        return yStart;
+    }
     protected static int overlap(int s1, int e1, int s2, int e2) {
         s1 = Math.max(s1, 0);
         s2 = Math.max(s2, 0);

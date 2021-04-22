@@ -176,8 +176,9 @@ public class GameWorld implements Serializable {
                     randomIntRange(R, 0, height - minheight),
                     randomIntRange(R, minwidth, maxwidth),
                     randomIntRange(R, minheight, maxheight));
-            while (tempRoom.isOverlapWithRooms(rooms) || tempRoom.xStart + tempRoom.width >= width
-                    || tempRoom.yStart + tempRoom.height >= height) {
+            while (tempRoom.isOverlapWithRooms(rooms)
+                    || tempRoom.xStart() + tempRoom.width() >= width
+                    || tempRoom.yStart() + tempRoom.height() >= height) {
                 tempRoom = new Room(randomIntRange(R, 0, width - minwidth),
                         randomIntRange(R, 0, height - minheight),
                         randomIntRange(R, minwidth, maxwidth),
@@ -189,18 +190,18 @@ public class GameWorld implements Serializable {
     }
 
     private void genPeopleInRoom(LinkedListDeque<Room> rooms, Random R) {
-        peopleX = randomIntRange(R, rooms.get(1).xStart + 1,
-                rooms.get(1).xStart + rooms.get(1).width - 2);
-        peopleY = randomIntRange(R,  rooms.get(1).yStart + 1,
-                rooms.get(1).yStart + rooms.get(1).height - 2);
+        peopleX = randomIntRange(R, rooms.get(1).xStart() + 1,
+                rooms.get(1).xStart() + rooms.get(1).width() - 2);
+        peopleY = randomIntRange(R,  rooms.get(1).yStart() + 1,
+                rooms.get(1).yStart() + rooms.get(1).height() - 2);
     }
 
     private void genFlowerInRoom(LinkedListDeque<Room> rooms, Random R) {
         int n = rooms.size() - 1;
-        flowerX = randomIntRange(R, rooms.get(n).xStart + 1,
-                rooms.get(n).xStart + rooms.get(n).width - 2);
-        flowerY = randomIntRange(R, rooms.get(n).yStart + 1,
-                rooms.get(n).yStart + rooms.get(n).height - 2);
+        flowerX = randomIntRange(R, rooms.get(n).xStart() + 1,
+                rooms.get(n).xStart() + rooms.get(n).width() - 2);
+        flowerY = randomIntRange(R, rooms.get(n).yStart() + 1,
+                rooms.get(n).yStart() + rooms.get(n).height() - 2);
     }
 
     public GameWorld(long seed) {
