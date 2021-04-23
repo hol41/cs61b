@@ -106,4 +106,8 @@ public class Percolation {
             return isOpen(0, 0);
         }
     }
+
+    public static void main(String[] args) {
+        
+    }
 }
