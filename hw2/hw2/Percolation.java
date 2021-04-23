@@ -100,13 +100,10 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        return blocksUn.connected(top, bot);
+        if (size > 1) {
+            return blocksUn.connected(top, bot);
+        } else {
+            return isOpen(0, 0);
+        }
     }
-
-    public static void main(String[] args) {
-
-    }
-
-
-
 }

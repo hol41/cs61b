@@ -21,6 +21,9 @@ public class PercolationStats {
     }
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
+        if (N <= 0 || T <= 0) {
+            throw new java.lang.IllegalArgumentException();
+        }
         size = N;
         t = T;
         results = new double[T];
@@ -30,7 +33,7 @@ public class PercolationStats {
             while (!p.percolates()) {
                 openNext(p);
             }
-            results[i] = (double) p.numberOfOpenSites() / (double) N * (double) N;
+            results[i] = (double) p.numberOfOpenSites() / (double) N / (double) N;
         }
 
         mean = 0;
